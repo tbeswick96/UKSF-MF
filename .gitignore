@@ -27,6 +27,8 @@ proguard/
 build/
 bin/
 
+out/
+
 runTest/
 launch4j/
 javadoc/
