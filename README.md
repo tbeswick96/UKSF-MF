@@ -11,9 +11,6 @@
     <a href="https://github.com/tbeswick96/UKSF-MF/blob/master/LICENSE">
         <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License">
     </a>
-    <a href="https://travis-ci.com/tbeswick96/UKSF-MF">
-        <img src="https://travis-ci.com/tbeswick96/UKSF-MF.svg?token=wxSxzZ46zhxtjEDToC7G&branch=master" alt="Build Status">
-    </a>
 </p>
 # UKSF Mission Fixer
 
