@@ -129,24 +129,18 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 			}
 			
 			//Handle class name changes
-			boolean changed = false;
 			for(String className : CLASS_NAMES.keySet()) {
 				if(line.contains(className)) {
 					String replaceName = CLASS_NAMES.get(className);
 					if(replaceName == null || Objects.equals(replaceName, "")) {
-						sqmOut.add(line.replace(className, DEFAULT_CLASS));
-						changed = true;
-						break;
+						line = line.replace(className, DEFAULT_CLASS);
 					} else {
-						sqmOut.add(line.replace(className, replaceName));
-						changed = true;
-						break;
+						line = line.replace(className, replaceName);
 					}
 				}
 			}
 			
-			//Else add original line
-			if(!changed) sqmOut.add(line);
+			sqmOut.add(line);
 		}
 		return sqmOut;
 	}
