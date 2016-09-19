@@ -20,6 +20,7 @@ import java.util.Objects;
 import static com.uksf.mf.core.utility.Info.*;
 import static com.uksf.mf.core.utility.LogHandler.Severity.ERROR;
 import static com.uksf.mf.core.utility.LogHandler.Severity.INFO;
+import static com.uksf.mf.core.utility.LogHandler.Severity.WARNING;
 
 /**
  * @author Tim
@@ -44,6 +45,16 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 	private void fixFiles() {
 		Core.getInstanceUI().setMessageText("Fixing...");
 		CLASS_NAMES = ClassNames.getClassNames();
+		if(CLASS_NAMES != null) {
+			LogHandler.logNoTime(HASHSPACE);
+			LogHandler.logSeverity(INFO, "Found class names: ");
+			for(String className : CLASS_NAMES.keySet()) {
+				LogHandler.logSeverity(INFO, className + "," + CLASS_NAMES.get(className));
+			}
+		} else {
+			LogHandler.logSeverity(WARNING, "No class names found");
+		}
+		LogHandler.logNoTime(HASHSPACE);
 		FIXEDCOUNT = 0;
 		COUNT = 0;
 		if(activeFile.isFile()) {
@@ -118,20 +129,24 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 			}
 			
 			//Handle class name changes
-			final boolean[] changed = {false};
-			CLASS_NAMES.keySet().stream().filter(line:: contains).forEach(className -> {
-				String replaceName = CLASS_NAMES.get(className);
-				if(replaceName == null || Objects.equals(replaceName, "")) {
-					sqmOut.add(line.replace(className, DEFAULT_CLASS));
-					changed[0] = true;
-				} else {
-					sqmOut.add(line.replace(className, replaceName));
-					changed[0] = true;
+			boolean changed = false;
+			for(String className : CLASS_NAMES.keySet()) {
+				if(line.contains(className)) {
+					String replaceName = CLASS_NAMES.get(className);
+					if(replaceName == null || Objects.equals(replaceName, "")) {
+						sqmOut.add(line.replace(className, DEFAULT_CLASS));
+						changed = true;
+						break;
+					} else {
+						sqmOut.add(line.replace(className, replaceName));
+						changed = true;
+						break;
+					}
 				}
-			});
+			}
 			
 			//Else add original line
-			if(!changed[0]) sqmOut.add(line);
+			if(!changed) sqmOut.add(line);
 		}
 		return sqmOut;
 	}

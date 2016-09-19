@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.uksf.mf.core.utility.LogHandler.Severity.WARNING;
@@ -25,8 +25,8 @@ public class ClassNames {
 	 * Gets class names from file on uksf server
 	 * @return map of class names: old, new
 	 */
-	public static HashMap<String, String> getClassNames() {
-		HashMap<String, String> classNames = new HashMap<>();
+	public static LinkedHashMap<String, String> getClassNames() {
+		LinkedHashMap<String, String> classNames = new LinkedHashMap<>();
 		try {
 			URL url = new URL("http://www.uk-sf.com/mf/CLASSES.txt");
 			if(checkConnection(url)) {

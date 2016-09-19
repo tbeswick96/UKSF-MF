@@ -13,7 +13,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * @author Tim
@@ -80,7 +80,7 @@ public class Info {
 	//SQM
 	public static String SQM_VERSION = "52";
 	public static String DEFAULT_CLASS = "B_Quadbike_01_F";
-	public static HashMap<String, String> CLASS_NAMES;
+	public static LinkedHashMap<String, String> CLASS_NAMES;
 	public static int COUNT = 0;
 	public static int FIXEDCOUNT = 0;
 }
