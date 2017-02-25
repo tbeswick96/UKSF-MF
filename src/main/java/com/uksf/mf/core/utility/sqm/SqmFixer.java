@@ -7,6 +7,7 @@
 package com.uksf.mf.core.utility.sqm;
 
 import com.uksf.mf.core.Core;
+import com.uksf.mf.core.utility.Attributes;
 import com.uksf.mf.core.utility.ClassNames;
 import com.uksf.mf.core.utility.LogHandler;
 import org.apache.commons.io.FileUtils;
@@ -44,6 +45,7 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 	 */
 	private void fixFiles() {
 		Core.getInstanceUI().setMessageText("Fixing...");
+		
 		CLASS_NAMES = ClassNames.getClassNames();
 		if(CLASS_NAMES != null) {
 			LogHandler.logNoTime(HASHSPACE);
@@ -54,7 +56,19 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 		} else {
 			LogHandler.logSeverity(WARNING, "No class names found");
 		}
+		
+		ATTRIBUTES = Attributes.getAttributes();
+		if(ATTRIBUTES != null) {
+			LogHandler.logNoTime(HASHSPACE);
+			LogHandler.logSeverity(INFO, "Found attributes: ");
+			for(String attribute : ATTRIBUTES.keySet()) {
+				LogHandler.logSeverity(INFO, attribute + "," + ATTRIBUTES.get(attribute));
+			}
+		} else {
+			LogHandler.logSeverity(WARNING, "No attributes found");
+		}
 		LogHandler.logNoTime(HASHSPACE);
+		
 		FIXEDCOUNT = 0;
 		COUNT = 0;
 		if(activeFile.isFile()) {
@@ -112,6 +126,9 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 		List<String> sqmOut = new ArrayList<>();
 		boolean addonsReached = false;
 		boolean addonsDone = false;
+		boolean attributePropertyReached = false;
+		String attributeProperty = "";
+		int attributeBracketCount = 0;
 		for(String line : sqmIn) {
 			//Handle addons array
 			if(line.toLowerCase().contains("addons[]=") && !addonsReached) {
@@ -136,6 +153,34 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 						line = line.replace(className, DEFAULT_CLASS);
 					} else {
 						line = line.replace(className, replaceName);
+					}
+				}
+			}
+			
+			//Handle attribute fixes
+			for(String attribute : ATTRIBUTES.keySet()) {
+				if(!attributePropertyReached && line.contains(attribute)) {
+					LogHandler.logSeverity(INFO, "Found attribute: '" + attribute + "'");
+					attributePropertyReached = true;
+					attributeProperty = attribute;
+					attributeBracketCount = 0;
+					break;
+				} else if(attributePropertyReached && attribute.equals(attributeProperty)) {
+					if (line.toLowerCase().contains("value=")) {
+						String replaceName = ATTRIBUTES.get(attribute);
+						LogHandler.logSeverity(INFO, "Found value, replacing with: '" + replaceName + "'");
+						line = line.replace("noChange", replaceName);
+						break;
+					} else if (attributeBracketCount == 2) {
+						LogHandler.logSeverity(INFO, "Closing brackets equal to 2, assuming finished");
+						attributePropertyReached = false;
+						attributeProperty = "";
+						attributeBracketCount = 0;
+						break;
+					} else if (line.toLowerCase().contains("};")) {
+						LogHandler.logSeverity(INFO, "Found a closing bracket, total: '" + attributeBracketCount + "'");
+						attributeBracketCount++;
+						break;
 					}
 				}
 			}
