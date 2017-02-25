@@ -62,7 +62,7 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 			LogHandler.logNoTime(HASHSPACE);
 			LogHandler.logSeverity(INFO, "Found attributes: ");
 			for(String attribute : ATTRIBUTES.keySet()) {
-				LogHandler.logSeverity(INFO, attribute + "," + ATTRIBUTES.get(attribute));
+				LogHandler.logSeverity(INFO, attribute + "," + ATTRIBUTES.get(attribute)[0] + "," + ATTRIBUTES.get(attribute)[1] + "," + ATTRIBUTES.get(attribute)[2]);
 			}
 		} else {
 			LogHandler.logSeverity(WARNING, "No attributes found");
@@ -128,6 +128,7 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 		boolean addonsDone = false;
 		boolean attributePropertyReached = false;
 		String attributeProperty = "";
+		boolean attributeTypeReached = false;
 		for(String line : sqmIn) {
 			//Handle addons array
 			if(line.toLowerCase().contains("addons[]=") && !addonsReached) {
@@ -163,9 +164,15 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 					attributeProperty = attribute;
 					break;
 				} else if(attributePropertyReached && attribute.equals(attributeProperty)) {
-					if (line.toLowerCase().contains("value=")) {
-						String replaceName = ATTRIBUTES.get(attribute);
-						line = line.replace("noChange", replaceName);
+					if (!attributeTypeReached && line.toLowerCase().contains("type[]=")) {
+						attributeTypeReached = true;
+						break;
+					} else if(attributeTypeReached && !line.toLowerCase().contains("{") && !line.toLowerCase().contains("};")) {
+						line = line.replace(ATTRIBUTES.get(attribute)[1], ATTRIBUTES.get(attribute)[2]);
+						attributeTypeReached = false;
+						break;
+					} else if (line.toLowerCase().contains("value=")) {
+						line = line.replace("noChange", ATTRIBUTES.get(attribute)[0]);
 						attributePropertyReached = false;
 						attributeProperty = "";
 						break;

@@ -81,7 +81,7 @@ public class Info {
 	public static String SQM_VERSION = "52";
 	public static String DEFAULT_CLASS = "B_Quadbike_01_F";
 	public static LinkedHashMap<String, String> CLASS_NAMES;
-	public static LinkedHashMap<String, String> ATTRIBUTES;
+	public static LinkedHashMap<String, String[]> ATTRIBUTES;
 	public static int COUNT = 0;
 	public static int FIXEDCOUNT = 0;
 }

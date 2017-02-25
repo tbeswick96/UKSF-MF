@@ -25,8 +25,8 @@ public class Attributes {
 	 * Gets attributes from file on uksf server
 	 * @return map of attributes names: search, default replace
 	 */
-	public static LinkedHashMap<String, String> getAttributes() {
-		LinkedHashMap<String, String> attributes = new LinkedHashMap<>();
+	public static LinkedHashMap<String, String[]> getAttributes() {
+		LinkedHashMap<String, String[]> attributes = new LinkedHashMap<>();
 		try {
 			URL url = new URL("http://www.uk-sf.com/mf/ATTRIBUTES.txt");
 			if(checkConnection(url)) {
@@ -36,8 +36,7 @@ public class Attributes {
 			List<String> lines = IOUtils.readLines(stream, "UTF-8");
 			for(String line : lines) {
 				String parts[] = line.split(",", -1);
-				if(parts[1] == null) parts[1] = "";
-				attributes.put(parts[0], parts[1]);
+				attributes.put(parts[0], new String[]{parts[1],parts[2],parts[3]});
 			}
 		} catch(IOException e) {
 			LogHandler.logSeverity(WARNING, "Cannot reach 'www.uk-sf.com', attribute fix will not run");
