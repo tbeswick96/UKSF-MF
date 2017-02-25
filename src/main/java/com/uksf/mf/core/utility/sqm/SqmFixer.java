@@ -160,7 +160,6 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 			//Handle attribute fixes
 			for(String attribute : ATTRIBUTES.keySet()) {
 				if(!attributePropertyReached && line.contains(attribute)) {
-					LogHandler.logSeverity(INFO, "Found attribute: '" + attribute + "'");
 					attributePropertyReached = true;
 					attributeProperty = attribute;
 					attributeBracketCount = 0;
@@ -168,17 +167,14 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 				} else if(attributePropertyReached && attribute.equals(attributeProperty)) {
 					if (line.toLowerCase().contains("value=")) {
 						String replaceName = ATTRIBUTES.get(attribute);
-						LogHandler.logSeverity(INFO, "Found value, replacing with: '" + replaceName + "'");
 						line = line.replace("noChange", replaceName);
 						break;
 					} else if (attributeBracketCount == 2) {
-						LogHandler.logSeverity(INFO, "Closing brackets equal to 2, assuming finished");
 						attributePropertyReached = false;
 						attributeProperty = "";
 						attributeBracketCount = 0;
 						break;
 					} else if (line.toLowerCase().contains("};")) {
-						LogHandler.logSeverity(INFO, "Found a closing bracket, total: '" + attributeBracketCount + "'");
 						attributeBracketCount++;
 						break;
 					}
