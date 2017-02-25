@@ -128,7 +128,6 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 		boolean addonsDone = false;
 		boolean attributePropertyReached = false;
 		String attributeProperty = "";
-		int attributeBracketCount = 0;
 		for(String line : sqmIn) {
 			//Handle addons array
 			if(line.toLowerCase().contains("addons[]=") && !addonsReached) {
@@ -162,20 +161,13 @@ public class SqmFixer extends SwingWorker<Void, Void> {
 				if(!attributePropertyReached && line.contains(attribute)) {
 					attributePropertyReached = true;
 					attributeProperty = attribute;
-					attributeBracketCount = 0;
 					break;
 				} else if(attributePropertyReached && attribute.equals(attributeProperty)) {
 					if (line.toLowerCase().contains("value=")) {
 						String replaceName = ATTRIBUTES.get(attribute);
 						line = line.replace("noChange", replaceName);
-						break;
-					} else if (attributeBracketCount == 2) {
 						attributePropertyReached = false;
 						attributeProperty = "";
-						attributeBracketCount = 0;
-						break;
-					} else if (line.toLowerCase().contains("};")) {
-						attributeBracketCount++;
 						break;
 					}
 				}
