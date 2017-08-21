@@ -78,7 +78,7 @@ public class Info {
 	public static JFileChooser FILE_CHOOSER;
 	
 	//SQM
-	public static String SQM_VERSION = "52";
+	public static String SQM_VERSION = "53";
 	public static String DEFAULT_CLASS = "B_Quadbike_01_F";
 	public static LinkedHashMap<String, String> CLASS_NAMES;
 	public static LinkedHashMap<String, String[]> ATTRIBUTES;

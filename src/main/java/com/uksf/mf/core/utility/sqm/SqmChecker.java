@@ -35,10 +35,10 @@ class SqmChecker {
 					LogHandler.logSeverity(WARNING, "Empty sqm file at '" + file.getAbsolutePath() + "'");
 					return false;
 				case 2:
-					LogHandler.logSeverity(WARNING, "Invalid sqm file at '" + file.getAbsolutePath() + "', Ensure sqm is not binarized");
+					LogHandler.logSeverity(WARNING, "Invalid sqm file at '" + file.getAbsolutePath() + "', Ensure sqm is SQM version " + SQM_VERSION);
 					return false;
 				case 3:
-					LogHandler.logSeverity(WARNING, "Invalid sqm file at '" + file.getAbsolutePath() + "', Ensure sqm is SQM version " + SQM_VERSION);
+					LogHandler.logSeverity(WARNING, "Invalid sqm file at '" + file.getAbsolutePath() + "', Ensure sqm is not binarized");
 					return false;
 			}
 		} catch(Exception e) {

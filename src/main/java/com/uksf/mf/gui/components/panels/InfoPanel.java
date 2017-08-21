@@ -62,7 +62,7 @@ public class InfoPanel extends JPanel {
 
 		CustomLabel author = new CustomLabel("Tim Beswick - ", Font.PLAIN, 10, false, COLOUR_TRANSPARENT, COLOUR_WHITE, "Dev Glub");
 		CustomLabelLink website = new CustomLabelLink("www.uk-sf.com", Font.PLAIN, 10, false, COLOUR_TRANSPARENT, COLOUR_WHITE, "United Kingdom Special Forces - ArmA 3 Milsim Unit");
-		CustomLabel copyright = new CustomLabel("Copyright (c) Tim Beswick UKSF 2016", Font.PLAIN, 10, false, COLOUR_TRANSPARENT, COLOUR_WHITE, "Don't steal mah stuff :(");
+		CustomLabel copyright = new CustomLabel("Copyright (c) Tim Beswick UKSF 2017", Font.PLAIN, 10, false, COLOUR_TRANSPARENT, COLOUR_WHITE, "Don't steal mah stuff :(");
 		CustomLabel license = new CustomLabel("This program is released under MIT License", Font.PLAIN, 10, false, COLOUR_TRANSPARENT, COLOUR_WHITE, "Plz comply");
 
 		creditsSubPanel.add(author, "right, cell 0 0"); creditsSubPanel.add(website, "cell 1 0");
